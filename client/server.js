@@ -46,16 +46,16 @@ io.on('connection', (socket) => {
 
     socket.on('newQuery', (msg) => {
         console.log(msg);
+        host='192.168.1.114'
+        port=5000
+        endpoint='/query'
+        app.post('http://'+host+':'+port+endpoint, msg, (res) => {
+            console.log(res);
 
-        fetch(`http://${env.DOMAIN}:${env.API_PORT}/query`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(msg)
-        })
+        });
     });
 });
+
 
 
 

@@ -1,4 +1,4 @@
-POST localhost:5000/query
+POST 192.168.1.114:5000/query
 Content-Type: application/json
 
 {

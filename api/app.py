@@ -12,12 +12,14 @@ import subprocess
 def hello_world():
     return 'Hello World!'
 
-@app.route('/query', methods=['GET', 'POST'])
-def test():
+@app.route('/query', methods=[ 'POST'])
+def getQuestion():
 
-
-    question =request.json
+    question = request
     print(question)
+    print('done')
+
+    #why isnt any of this being printed?
 
     # answer = get_answer(question)
     # print(answer)
@@ -29,6 +31,8 @@ def test():
     # print('done')
 
     return 'success'
+
+
 
 def get_answer(question):
     load_dotenv('C:/Users/Ivor/Documents/GitHub/privateGPT/.env')
@@ -55,5 +59,6 @@ def get_answer(question):
 
 if __name__ == '__main__':
 
-    app.run('0.0.0.0', 5000, debug=True)
+
+    app.run('192.168.1.114', 5000, debug=True)
 
