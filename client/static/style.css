@@ -14,6 +14,16 @@ body {
     display: flex;
     height: 3rem;
     box-sizing: border-box;
+    /* -webkit-mask: -webkit-gradient(linear,
+            left 45%,
+            left 0%,
+            from(rgba(0, 0, 0, 1)),
+            to(rgba(0, 0, 0, 0))); */
+    mask: gradient(linear,
+            left 45%,
+            left 0%,
+            from(rgba(0, 0, 0, 1)),
+            to(rgba(0, 0, 0, 0)));
     backdrop-filter: blur(10px);
 }
 
@@ -39,15 +49,18 @@ body {
     color: #fff;
 }
 
-#messages, .query {
+#messages,
+.query {
     display: flex;
     flex-direction: column;
 }
+
 #messages {
     padding: 50px;
     overflow-y: auto;
     flex-grow: 1;
 }
+
 .message {
     padding: 0.5rem;
     background: lightgray;
@@ -58,7 +71,7 @@ body {
     margin: 10px;
 }
 
-.question{
+.question {
     margin-left: auto;
     background: #1046a2;
     color: white;
@@ -67,16 +80,19 @@ body {
 .info {
     display: flex;
 }
-.info > .time {
+
+.info>.time {
     text-align: right;
     flex: 1;
     font-size: 10px;
     opacity: 0.6
 }
-.info > input {
+
+.info>input {
     display: none;
 }
-.info > label {
+
+.info>label {
     display: inline-block;
     padding: 0.5rem 1rem;
     background: #eee;
@@ -88,10 +104,12 @@ body {
 .sources {
     display: none;
 }
-.answer:has(#showSources:checked) > .sources {
+
+.answer:has(#showSources:checked)>.sources {
     display: block;
 }
+
 /* .answer has #sources that is empty */
-.answer:has(#sources:empty) > .info > label {
+.answer:has(#sources:empty)>.info>label {
     display: none;
 }
