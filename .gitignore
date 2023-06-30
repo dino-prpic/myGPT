@@ -3,8 +3,8 @@ api/.idea
 api/test
 api/__pycache__
 api/db
-privateGPT/.idea
-privateGPT/node_modules
-privateGPT/__pycache__
-privateGPT/db
+api/privateGPT/.idea
+api/privateGPT/node_modules
+api/privateGPT/__pycache__
+api/privateGPT/db
 
