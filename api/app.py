@@ -55,6 +55,9 @@ def get_answer(question):
     f.write(question)
     f.close()
 
+    #ovo ce trazit odgovor od privateGPT.py
+
+
     command='start cmd /K python C:/Users/Ivor/Documents/GitHub/privateGPT/privateGPT.py'
 
     subprocess.Popen(command,stdin=subprocess.PIPE, shell=True)
