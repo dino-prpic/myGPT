@@ -15,6 +15,7 @@ app.use(express.json()); // for parsing application/json
 const server = http.createServer(app);
 server.listen(env.PORT, () => { console.log(`Server running on http://${env.DOMAIN}:${env.PORT}`); });
 
+const axios = require('axios');
 
 
 // ANCHOR Socket.io
@@ -51,7 +52,6 @@ io.on('connection', (socket) => {
     socket.on('newQuery', (msg) => {
         console.log(msg);
        //send post request to api
-        const axios = require('axios');
         axios.post(`http://192.168.1.114:${env.API_PORT}/query`, msg)
             .then((res) => {
                 console.log(`statusCode: ${res.status}`);
