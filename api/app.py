@@ -19,11 +19,9 @@ def hello_world():
 @app.route('/query', methods=[ 'POST'])
 def getQuestion():
 
-    question = request.data.json['question']
-    id=request.data.json['id']
-    timeline=request.data.json['timeline']
 
-    print(request.data)
+
+    #print(question,id,timeline)
 
     url = 'http://localhost:3000/pushAnswer'
     payload = {'answer': 'blabla',
@@ -31,12 +29,17 @@ def getQuestion():
     headers = {
         'Content-Type': 'application/json'
     }
+    id=request.json['id']
+    question=request.json['question']
+    timeline=request.json['timeline']
 
 
-    request.body = {"id":id,"question":question,"timeline": timeline,"anwser":"volim te"}
-    print(request.data)
+    request.body = {'id': id,
+                    'question': question,
+                    'timeline': timeline,
+                    'answer': 'volim te'}
 
-    payload = json.dumps(payload)
+    payload = json.dumps(request.body)
     response = requests.request("POST", url, headers=headers, data=payload)
 
 
