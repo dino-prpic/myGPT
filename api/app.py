@@ -3,6 +3,8 @@ from flask import Flask, request
 from dotenv import load_dotenv
 import time
 import os
+import json
+
 app = Flask(__name__)
 import subprocess
 
@@ -12,23 +14,31 @@ import subprocess
 def hello_world():
     return 'Hello World!'
 
+
+
 @app.route('/query', methods=[ 'POST'])
 def getQuestion():
 
-    question = request
-    print(question)
-    print('done')
+    question = request.data.json['question']
+    id=request.data.json['id']
+    timeline=request.data.json['timeline']
 
-    #why isnt any of this being printed?
+    print(request.data)
 
-    # answer = get_answer(question)
-    # print(answer)
-    # url = 'http://192.168.1.201:3000/pushAnswer'
-    #
-    # data = {'answer': 'blabla'}
-    #
-    # requests.request("POST", url, data=data)
-    # print('done')
+    url = 'http://localhost:3000/pushAnswer'
+    payload = {'answer': 'blabla',
+               'id': '1'}
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+
+    request.body = {"id":id,"question":question,"timeline": timeline,"anwser":"volim te"}
+    print(request.data)
+
+    payload = json.dumps(payload)
+    response = requests.request("POST", url, headers=headers, data=payload)
+
 
     return 'success'
 

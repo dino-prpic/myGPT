@@ -32,7 +32,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/static/index.html');
 });
 
-app.post('/pushAnswer', (req, res) => { 
+app.post('/pushAnswer', (req, res) => {
+  //post requst in json format
+
+    res.setHeader('Content-Type', 'application/json');
+
     console.log('pushAnswer');
     console.log(req.body);
     res.send('ok');
@@ -46,15 +50,21 @@ io.on('connection', (socket) => {
 
     socket.on('newQuery', (msg) => {
         console.log(msg);
-        host='192.168.1.114'
-        port=5000
-        endpoint='/query'
-        app.post('http://'+host+':'+port+endpoint, msg, (res) => {
-            console.log(res);
-
-        });
+       //send post request to api
+        const axios = require('axios');
+        axios.post(`http://192.168.1.114:${env.API_PORT}/query`, msg)
+            .then((res) => {
+                console.log(`statusCode: ${res.status}`);
+                  io.emit('updateQuery', res.data);
+            }
+            )
+            .catch((error) => {
+                console.error(error)
+            }
+            )
     });
 });
+
 
 
 
