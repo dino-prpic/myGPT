@@ -58,7 +58,6 @@ def get_answer(question):
     f.write(question)
     f.close()
 
-
     command='start cmd /K python privateGPT/privateGPT.py'
 
     subprocess.Popen(command,stdin=subprocess.PIPE, shell=True)

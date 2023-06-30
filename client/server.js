@@ -25,9 +25,6 @@ const io = new Server(server);
 
 
 
-
-// SECTION APP
-
 app.use(express.static('static'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/static/index.html');
@@ -52,9 +49,9 @@ io.on('connection', (socket) => {
     socket.on('newQuery', (msg) => {
         console.log(msg);
        //send post request to api
-        axios.post(`http://192.168.1.114:${env.API_PORT}/query`, msg)
+        axios.post(`http://localhost:${env.API_PORT}/query`, msg)
             .then((res) => {
-                console.log(`statusCode: ${res.status}`);
+               // console.log(`statusCode: ${res.status}`);
                   io.emit('updateQuery', res.data);
             }
             )
