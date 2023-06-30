@@ -1,9 +1,6 @@
 // ANCHOR Environment Variables
-const env = {
-    PORT: 3000,
-    API_PORT: 5000,
-    DOMAIN: 'localhost',
-}
+const dotenv = require('dotenv');
+dotenv.config({ path: '../.env' });
 
 
 // ANCHOR Express
@@ -13,7 +10,7 @@ const express = require('express');
 const app = express();
 app.use(express.json()); // for parsing application/json
 const server = http.createServer(app);
-server.listen(env.PORT, () => { console.log(`Server running on http://${env.DOMAIN}:${env.PORT}`); });
+server.listen(process.env.CLIENT_PORT, () => { console.log(`Server running on http://${process.env.HOSTNAME}:${process.env.CLIENT_PORT}`); });
 
 const axios = require('axios');
 
@@ -51,17 +48,15 @@ io.on('connection', (socket) => {
 
     socket.on('newQuery', (msg) => {
         console.log(msg);
-       //send post request to api
-        axios.post(`http://192.168.1.114:${env.API_PORT}/query`, msg)
+        //send post request to api
+        axios.post(`http://${process.env.HOSTNAME}:${process.env.API_PORT}/query`, msg)
             .then((res) => {
                 console.log(`statusCode: ${res.status}`);
                   io.emit('updateQuery', res.data);
-            }
-            )
+            })
             .catch((error) => {
                 console.error(error)
-            }
-            )
+            })
     });
 });
 

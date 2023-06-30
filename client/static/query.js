@@ -61,7 +61,6 @@ export default class Query {
 
     get sources() {return this._sources;}
     set sources(values) {
-        
         this._sources = values;
         this.#render('sources', '');
         values.forEach(value => {
@@ -69,7 +68,6 @@ export default class Query {
             element.innerHTML = value;
             this.element.querySelector('#sources').appendChild(element);
         });
-
     }
 
     get timeline() {return this._timeline;}

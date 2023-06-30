@@ -5,6 +5,11 @@ import time
 import os
 import json
 
+
+load_dotenv('../.env')
+
+
+
 app = Flask(__name__)
 import subprocess
 
@@ -25,8 +30,6 @@ def getQuestion():
     #print(question,id,timeline)
 
     url = 'http://localhost:3000/pushAnswer'
-    payload = {'answer': 'blabla',
-               'id': '1'}
     headers = {
         'Content-Type': 'application/json'
     }
@@ -49,7 +52,6 @@ def getQuestion():
 
 
 def get_answer(question):
-    load_dotenv('C:/Users/Ivor/Documents/GitHub/privateGPT/.env')
 
     f = open("question.txt", "w")
     f.write(question)
@@ -77,5 +79,5 @@ def get_answer(question):
 if __name__ == '__main__':
 
 
-    app.run('192.168.1.114', 5000, debug=True)
+    app.run('localhost', 5000, debug=True)
 
