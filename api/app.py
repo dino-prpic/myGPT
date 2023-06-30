@@ -20,8 +20,6 @@ def hello_world():
 def getQuestion():
 
 
-
-
     #print(question,id,timeline)
 
     url = 'http://localhost:3000/pushAnswer'
@@ -35,13 +33,17 @@ def getQuestion():
     timeline=request.json['timeline']
 
 
-    request.body = {'id': id,
+    query_json={'id': id,
                     'question': question,
                     'timeline': timeline,
                     'answer': 'volim te'}
+    request.body = query_json
 
     payload = json.dumps(request.body)
     response = requests.request("POST", url, headers=headers, data=payload)
+
+
+    anwser=get_answer(payload)
 
 
     return 'success'
@@ -50,26 +52,24 @@ def getQuestion():
 
 def get_answer(question):
     load_dotenv('C:/Users/Ivor/Documents/GitHub/privateGPT/.env')
-
+    print(question)
+    print('hello')
     f = open("question.txt", "w")
     f.write(question)
     f.close()
 
-    #ovo ce trazit odgovor od privateGPT.py
 
-
-    command='start cmd /K python C:/Users/Ivor/Documents/GitHub/privateGPT/privateGPT.py'
+    command='start cmd /K python privateGPT/privateGPT.py'
 
     subprocess.Popen(command,stdin=subprocess.PIPE, shell=True)
 
     print('done')
 
-   # f = open("answer.txt", "r")
+    f = open("answer.txt", "r")
 
     #answer=f.readline()
     answer="blabla"
     f.close()
-
 
     return answer
 
