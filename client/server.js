@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     socket.on('newQuery', (msg) => {
         console.log(msg);
 
-        fetch(`http://192.168.1.114:${env.API_PORT}/query`, {
+        fetch(`http://localhost:${env.API_PORT}/query`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
