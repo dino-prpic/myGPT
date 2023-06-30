@@ -1,1 +1,10 @@
 client/node_modules
+api/.idea
+api/test
+api/__pycache__
+api/db
+privateGPT/.idea
+privateGPT/node_modules
+privateGPT/__pycache__
+privateGPT/db
+
