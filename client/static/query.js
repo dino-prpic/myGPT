@@ -7,10 +7,11 @@ export default class Query {
     _timeline = [];
 
 
-    constructor() {
-        this.id = Date.now();
+    constructor(id = Date.now()) {
+        this.id = id;
         this.timeline.push(Date.now());
         this.element= document.createElement('div');
+        this.element.dataset.id = this.id;
         this.element.classList.add('query');
         this.element.innerHTML = /*html*/`
             <div class="message question">
@@ -66,8 +67,11 @@ export default class Query {
         this._sources = values;
         this.#render('sources', '');
         values.forEach(value => {
-            const element = document.createElement('p');
-            element.innerHTML = value;
+            const element = document.createElement('div');
+            element.innerHTML = /*html*/`
+                <h5>${value.title}</h5>
+                <p>${value.content}</p>
+            `;
             this.element.querySelector('#sources').appendChild(element);
         });
     }
@@ -77,7 +81,11 @@ export default class Query {
         this._timeline = value;
         const [asked, started, answered] = value;
         this.#render('q-time', humanTime(asked));
-        this.#render('a-time', humanTime(answered) || humanTime(started) || '');
+        if (answered) {
+            this.#render('a-time', humanTime(answered) + ' (' + humanRelativeTime(answered - started) + ')');
+        } else {
+            this.#render('a-time', humanTime(started));
+        }
     }
 
 
@@ -94,4 +102,11 @@ function humanTime(timestamp) {
         default:
             return date.toLocaleDateString();
     }
+}
+
+function humanRelativeTime(ms) {
+    if (ms < 1000) return `${ms}ms`;
+    if (ms < 60000) return `${Math.floor(ms/1000)}s`;
+    if (ms < 3600000) return `${Math.floor(ms/60000)}m${Math.floor((ms%60000)/1000)}s`;
+    if (ms < 86400000) return `${Math.floor(ms/3600000)}h${Math.floor((ms%3600000)/60000)}m`;
 }

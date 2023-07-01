@@ -81,6 +81,8 @@ def ask():
 
 
 def process_query(query):
+    print("\n\n> New query received: " + query['question'])
+
     query['answer'] = 'started processing'
     pushQuery(query)
 
@@ -122,6 +124,7 @@ def process_query(query):
 
 def pushQuery(query):
     query['timeline'].append(time.time()*1000)
+    backup(query)
     headers = {
         'Content-Type': 'application/json'
     }
@@ -129,6 +132,17 @@ def pushQuery(query):
     payload = json.dumps(query)
     requests.request("POST", url, headers=headers, data=payload)
     return
+
+
+def backup(query):
+    if not os.path.exists('backup'):
+        os.makedirs('backup')
+    # f = open("backup/"+query['id']+".json", "w")
+    f = open("backup/"+str(query['id'])+".json", "w")
+    f.write(json.dumps(query))
+    f.close()
+    return
+
 
 
 def parse_arguments():
