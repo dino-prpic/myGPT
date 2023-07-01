@@ -1,13 +1,11 @@
-client/node_modules
-api/.idea
+node_modules
 .idea
-api/test
-api/__pycache__
-api/db
-api/privateGPT/.idea
-api/privateGPT/__pycache__
-api/privateGPT/db
-api/privateGPT/models
+__pycache__
+source_documents
+models
+
+
+
 
 # OSX
 .DS_STORE
