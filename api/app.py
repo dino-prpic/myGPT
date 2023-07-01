@@ -7,6 +7,9 @@ import json
 
 
 load_dotenv('../.env')
+host=os.environ.get('HOSTNAME')
+api_port=os.environ.get('API_PORT')
+client_port=os.environ.get('CLIENT_PORT')
 
 
 app = Flask(__name__)
@@ -23,32 +26,32 @@ def hello_world():
 @app.route('/query', methods=[ 'POST'])
 def getQuestion():
 
-    host=os.environ.get('HOSTNAME')
-    port=os.environ.get('CLIENT_PORT')
 
+    # copy request.json to query, and add answer
+    # q: from where do i get request.json? a: from the request
+    query = request.json
 
-    url = "http://"+host+":"+port+"/pushAnswer"
-
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    # copy request.json to request.body, and add answer
-    request.body = request.json
-
-    if request.body['question'] == 'i ja tebe':
-        request.body['answer'] = '❤️'
+    if query['question'] == 'i ja tebe':
+        query['answer'] = '❤️'
     else:
-        request.body['answer'] = 'volim te'
-        request.body['sources'] = ['blaaaaaaaaaaaaaaaaaaaaaaaaasfsaaaaaaaaaaaaavasvaS<CVDSa', 'bla2', 'bla3']
-    request.body['timeline'].append(time.time()*1000)
+        query['answer'] = 'volim te'
+        query['sources'] = ['blaa asfh afuishfuiajskb weahsui hsdui ', 'bla2', 'bla3']
+    query['timeline'].append(time.time()*1000)
 
-    payload = json.dumps(request.body)
-    response = requests.request("POST", url, headers=headers, data=payload)
+    pushQuery(query)
 
 
     return 'success'
 
 
+def pushQuery(query):
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    url = "http://"+host+":"+client_port+"/pushAnswer"
+    payload = json.dumps(query)
+    response = requests.request("POST", url, headers=headers, data=payload)
+    return
 
 def get_answer(question):
 
@@ -76,8 +79,5 @@ def get_answer(question):
 
 
 if __name__ == '__main__':
-
-    host=os.environ.get('HOSTNAME')
-    port=os.environ.get('API_PORT')
-    app.run(host,port,debug=True)
+    app.run(host,api_port,debug=True)
 
