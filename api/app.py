@@ -23,11 +23,6 @@ def hello_world():
 @app.route('/query', methods=[ 'POST'])
 def getQuestion():
 
-
-
-
-    #print(question,id,timeline)
-
     host=os.environ.get('HOSTNAME')
     port=os.environ.get('CLIENT_PORT')
 
@@ -37,15 +32,15 @@ def getQuestion():
     headers = {
         'Content-Type': 'application/json'
     }
-    id=request.json['id']
-    question=request.json['question']
-    timeline=request.json['timeline']
+    # copy request.json to request.body, and add answer
+    request.body = request.json
 
-
-    request.body = {'id': id,
-                    'question': question,
-                    'timeline': timeline,
-                    'answer': 'volim te'}
+    if request.body['question'] == 'i ja tebe':
+        request.body['answer'] = '❤️'
+    else:
+        request.body['answer'] = 'volim te'
+        request.body['sources'] = ['blaaaaaaaaaaaaaaaaaaaaaaaaasfsaaaaaaaaaaaaavasvaS<CVDSa', 'bla2', 'bla3']
+    request.body['timeline'].append(time.time()*1000)
 
     payload = json.dumps(request.body)
     response = requests.request("POST", url, headers=headers, data=payload)
