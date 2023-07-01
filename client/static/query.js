@@ -22,15 +22,17 @@ export default class Query {
             <div class="message answer">
                 <p id="answer"></p>
                 <div class="info">
-                    <label for="showSources">Sources</label>
-                    <input type="checkbox" id="showSources" name="showSources" value="showSources">
+                    <button id="toggleSources">Sources</button>
                     <p class="time" id="a-time"></p>
                 </div>
-                <div class="sources">
+                <div class="sources hidden">
                     <div id="sources"></div>
                 </div>
             </div>
         `;
+        this.element.querySelector('#toggleSources').addEventListener('click', () => {
+            this.element.querySelector('.sources').classList.toggle('hidden');
+        });
     }
 
     export() {
@@ -84,5 +86,12 @@ export default class Query {
 function humanTime(timestamp) {
     if (!timestamp) return '';
     const date = new Date(timestamp);
-    return date.toLocaleString();
+    switch (true) {
+        case date.toDateString() === new Date().toDateString(): // is today?
+            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        case date.getFullYear() === new Date().getFullYear(): // is this year?
+            return date.toLocaleDateString([], {month: 'short', day: 'numeric'});
+        default:
+            return date.toLocaleDateString();
+    }
 }

@@ -13,13 +13,17 @@ export default class Chat {
         if (question) newQuery.question = question;
         this.queries.push(newQuery);
         this.queries.sort((a, b) => a.id - b.id);
+
+        this.#scrollTo(newQuery);
         return newQuery;
     }
 
     update(query) {
+        if (!query.id && typeof query.id !== 'number') return;
         const current = this.#getQuery(query.id);
 
         Object.assign(current, query);
+        // this.#scrollTo(current);
     }
 
     #getQuery(id) {
@@ -29,6 +33,11 @@ export default class Chat {
         const newQuery = this.newQuery();
         newQuery.id = id;
         return newQuery;
+    }
+
+    #scrollTo(query) {
+        query.element.scrollIntoView({behavior: "smooth"});
+        // query.element.scrollIntoView();
     }
     
 
