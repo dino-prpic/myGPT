@@ -6,13 +6,19 @@ export default class Chat {
         this.queries = [];
     }
 
-    newQuery(question) {
-        const newQuery = new Query();
-        this.element.appendChild(newQuery.element);
+    newQuery(question, id) {
+        const newQuery = new Query(id);
 
         if (question) newQuery.question = question;
-        this.queries.push(newQuery);
-        this.queries.sort((a, b) => a.id - b.id);
+        for (let i = 0; i <= this.queries.length; i++) {
+            if ( i === this.queries.length || this.queries[i].id > newQuery.id) {
+                this.queries.splice(i, 0, newQuery);
+                console.log('inserted');
+                break;
+            }
+        }
+
+        this.#render();
 
         this.#scrollTo(newQuery);
         return newQuery;
@@ -30,14 +36,20 @@ export default class Chat {
         const query = this.queries.find(query => query.id === id);
         if (query) return query;
         // if it doesnt exist, create it
-        const newQuery = this.newQuery();
-        newQuery.id = id;
+        const newQuery = this.newQuery(null, id);
         return newQuery;
     }
 
     #scrollTo(query) {
         query.element.scrollIntoView({behavior: "smooth"});
         // query.element.scrollIntoView();
+    }
+
+    #render() {
+        for (let i = 0; i < this.queries.length; i++) {
+            this.element.appendChild(this.queries[i].element);
+        }
+        console.log(this.queries);
     }
     
 
