@@ -21,6 +21,8 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 
+// ANCHOR Backups
+const backups = require('./backup.js');
 
 
 // SECTION APP
@@ -44,7 +46,20 @@ app.post('/pushAnswer', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.waitlist = backups.list();
+
     socket.on('disconnect', () => { console.log('user disconnected'); });
+
+    socket.on('loadOlder', (quantity) => {
+        console.log('loadOlder');
+        console.log(quantity);
+        for (let i = 0; i < quantity; i++) {
+            const id = socket.waitlist.pop();
+            if (!id) break;
+            const query = backups.load(id);
+            socket.emit('updateQuery', query);
+        }
+    });
 
     socket.on('newQuery', (msg) => {
         console.log(msg);

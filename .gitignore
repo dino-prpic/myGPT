@@ -1,9 +1,7 @@
-node_modules
+node_modules/
 .idea
-__pycache__
-source_documents
-models
-
+source_documents/
+backup/
 
 
 
