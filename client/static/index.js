@@ -19,6 +19,6 @@ form.addEventListener('submit', function (e) {
 
 // on event
 socket.on('updateQuery', function (msg) {
-    console.log(msg);
+    console.log('updateQuery', msg);
     chat.update(msg);
 });
