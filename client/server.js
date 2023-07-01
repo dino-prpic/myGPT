@@ -51,7 +51,13 @@ io.on('connection', (socket) => {
         //send post request to api
         axios.post(`http://${process.env.HOSTNAME}:${process.env.API_PORT}/query`, msg)
             .then((res) => {
+<<<<<<< Updated upstream
                 console.log(`statusCode: ${res.status}`);
+=======
+                //header json
+                res.setHeader('Content-Type', 'application/json');
+               // console.log(`statusCode: ${res.status}`);
+>>>>>>> Stashed changes
                   io.emit('updateQuery', res.data);
             })
             .catch((error) => {
