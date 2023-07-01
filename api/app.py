@@ -24,10 +24,10 @@ def hello_world():
 def getQuestion():
 
     host=os.environ.get('HOSTNAME')
-    port=os.environ.get('CLIENT_PORT')
+    client_port=os.environ.get('CLIENT_PORT')
 
 
-    url = "http://"+host+":"+port+"/pushAnswer"
+    url = "http://"+host+":"+client_port+"/pushAnswer"
 
     headers = {
         'Content-Type': 'application/json'
@@ -39,14 +39,13 @@ def getQuestion():
         request.body['answer'] = '❤️'
     else:
         request.body['answer'] = 'volim te'
-        request.body['sources'] = ['blaaaaaaaaaaaaaaaaaaaaaaaaasfsaaaaaaaaaaaaavasvaS<CVDSa', 'bla2', 'bla3']
+        request.body['sources'] = ['blaa asfh afuishfuiajskb weahsui hsdui ', 'bla2', 'bla3']
     request.body['timeline'].append(time.time()*1000)
 
     payload = json.dumps(request.body)
     response = requests.request("POST", url, headers=headers, data=payload)
 
-
-    return 'success'
+    return
 
 
 
@@ -78,6 +77,6 @@ def get_answer(question):
 if __name__ == '__main__':
 
     host=os.environ.get('HOSTNAME')
-    port=os.environ.get('API_PORT')
-    app.run(host,port,debug=True)
+    api_port=os.environ.get('API_PORT')
+    app.run(host,api_port,debug=True)
 
