@@ -9,7 +9,6 @@ import json
 load_dotenv('../.env')
 
 
-
 app = Flask(__name__)
 import subprocess
 
@@ -29,7 +28,12 @@ def getQuestion():
 
     #print(question,id,timeline)
 
-    url = 'http://localhost:3000/pushAnswer'
+    host=os.environ.get('HOSTNAME')
+    port=os.environ.get('CLIENT_PORT')
+
+
+    url = "http://"+host+":"+port+"/pushAnswer"
+
     headers = {
         'Content-Type': 'application/json'
     }
@@ -78,6 +82,7 @@ def get_answer(question):
 
 if __name__ == '__main__':
 
-
-    app.run('localhost', 5000, debug=True)
+    host=os.environ.get('HOSTNAME')
+    port=os.environ.get('API_PORT')
+    app.run(host,port,debug=True)
 
