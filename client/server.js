@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
         axios.post(`http://${process.env.HOSTNAME}:${process.env.API_PORT}/query`, msg)
             .then((res) => {
                 console.log(`statusCode: ${res.status}`);
-                  io.emit('updateQuery', res.data);
             })
             .catch((error) => {
                 console.error(error)
