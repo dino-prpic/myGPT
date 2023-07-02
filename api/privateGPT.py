@@ -26,9 +26,9 @@ persist_directory = os.environ.get('PERSIST_DIRECTORY')
 
 model_type = os.environ.get('MODEL_TYPE')
 model_path = os.environ.get('MODEL_PATH')
-model_n_ctx = os.environ.get('MODEL_N_CTX')
-model_n_batch = int(os.environ.get('MODEL_N_BATCH',8))
-target_source_chunks = int(os.environ.get('TARGET_SOURCE_CHUNKS',4))
+model_n_ctx = os.environ.get('MODEL_N_CTX') # this is the number of tokens to feed to the model
+model_n_batch = int(os.environ.get('MODEL_N_BATCH',8)) # this is the number of chunks to split the input sequence into
+target_source_chunks = int(os.environ.get('TARGET_SOURCE_CHUNKS',4)) # this is the number of source chunks to retrieve for each query
 
 app = Flask(__name__)
 
@@ -65,7 +65,7 @@ def main():
     qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents= not args.hide_source)
 
     # Start the API
-    app.run(api_host,api_port,debug=True)
+    app.run(api_host,api_port)
 
 
 @app.route('/query', methods=[ 'POST'])
@@ -124,23 +124,12 @@ def process_query(query):
 
 def pushQuery(query):
     query['timeline'].append(time.time()*1000)
-    backup(query)
     headers = {
         'Content-Type': 'application/json'
     }
     url = "http://"+client_host+":"+client_port+"/pushAnswer"
     payload = json.dumps(query)
     requests.request("POST", url, headers=headers, data=payload)
-    return
-
-
-def backup(query):
-    if not os.path.exists('backup'):
-        os.makedirs('backup')
-    # f = open("backup/"+query['id']+".json", "w")
-    f = open("backup/"+str(query['id'])+".json", "w")
-    f.write(json.dumps(query))
-    f.close()
     return
 
 
