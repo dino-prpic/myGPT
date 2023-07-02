@@ -10,7 +10,7 @@ const express = require('express');
 const app = express();
 app.use(express.json()); // for parsing application/json
 const server = http.createServer(app);
-server.listen(process.env.CLIENT_PORT, () => { console.log(`Server running on http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`); });
+server.listen(process.env.CLIENT_PORT, () => { console.log(`Open http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT} in your browser`); });
 
 const axios = require('axios');
 
@@ -41,6 +41,7 @@ app.post('/pushAnswer', (req, res) => {
     console.log(req.body);
     res.send('ok');
 
+    backups.save(req.body);
     io.emit('updateQuery', req.body);
 });
 
@@ -61,10 +62,10 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('newQuery', (msg) => {
-        console.log(msg);
+    socket.on('newQuery', (query) => {
+        console.log(query);
         //send post request to api
-        axios.post(`http://${process.env.API_HOST}:${process.env.API_PORT}/query`, msg)
+        axios.post(`http://${process.env.API_HOST}:${process.env.API_PORT}/query`, query)
             .then((res) => {
                 console.log(`statusCode: ${res.status}`);
             })
